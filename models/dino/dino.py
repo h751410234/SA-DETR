@@ -293,15 +293,15 @@ class DINO(nn.Module):
                 # numpy_mask = box_masks[0,0,:,:].cpu().numpy()
                 # print('***********')
                 # print(numpy_mask.shape)
-                # save_path = '/data/jianhonghan/code/第三篇域泛化/code/论文创新代码汇总/DINO-main_多域训练+特征映射_加入特征对齐+mask/test_mask.jpg'
-                # save_path1 = '/data/jianhonghan/code/第三篇域泛化/code/论文创新代码汇总/DINO-main_多域训练+特征映射_加入特征对齐+mask/test.jpg'
+                # save_path = 'test_mask.jpg'
+                # save_path1 = 'test.jpg'
                 # cv2.imwrite(save_path, (numpy_img  * numpy_mask*255 ).transpose(1,2,0) )
                 # cv2.imwrite(save_path1, (numpy_img  *255).transpose(1,2,0)  )
                 #
                 # numpy_img1 = samples.tensors[3,:,:,:].cpu().numpy()
                 # numpy_mask1 = box_masks[3,0,:,:].cpu().numpy()
-                # save_path2 = '/data/jianhonghan/code/第三篇域泛化/code/论文创新代码汇总/DINO-main_多域训练+特征映射_加入特征对齐+mask/test_mask1.jpg'
-                # save_path3 = '/data/jianhonghan/code/第三篇域泛化/code/论文创新代码汇总/DINO-main_多域训练+特征映射_加入特征对齐+mask/test1.jpg'
+                # save_path2 = 'test_mask1.jpg'
+                # save_path3 = 'test1.jpg'
                 # cv2.imwrite(save_path2, (numpy_img1  * numpy_mask1*255 ).transpose(1,2,0) )
                 # cv2.imwrite(save_path3, (numpy_img1  *255).transpose(1,2,0)  )
                 #-----------------------

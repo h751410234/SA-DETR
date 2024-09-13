@@ -87,7 +87,7 @@ python inference.py
 ```
 
 ## Pre-trained models
-We provide specific [experimental configurations](config/DINO_4scale.py) and [pre-trained model](https://pan.baidu.com/s/1ZGvYjwXUMoBqtcGHfTnNww?pwd=mxxg) to facilitate the reproduction of our results. 
+We provide specific [experimental configurations](config/DINO_4scale.py) and [pre-trained model](https://pan.baidu.com/s/1A5iEQTO5nMu90x1W5aw7qA?pwd=1i9z)
 You can learn the details of SA-DETR through the paper, and please cite our papers if the code is useful for your papers. Thank you!
 
 

@@ -118,7 +118,7 @@ class StyleRepresentation(nn.Module):
         fea = ((fea - cur_mu[:, :, None, None]) / cur_sig[:, :, None, None]) * mixed_sig[:, :, None, None] + mixed_mu[:,
                                                                                                              :, None,
                                                                                                              None]
-        #使用更新的均值方差，缩放提取特征，实现特征的映射(仅更新对应的源域特征，增广域不进行映射)
+        #使用更新的均值方差，缩放提取特征，实现特征的映射(仅更新对应的源域特征，增广域不进行映射)（效果不好不考虑）
         #fea:[b,c,h,w]
         # if self.training:
         #     source_fea = fea[0:batch// 2,:,:,:]
