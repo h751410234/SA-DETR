@@ -307,17 +307,25 @@ class DINO(nn.Module):
                 #-----------------------
                 mask_flatten_da_class = []
                 for class_idx in range(self.num_classes):
-                    #将每个类别的mask映射到特征图大小
                     mask_flatten_da = []
-                    for src in srcs:  #src:(b,c,h,w)
-                        downsample_size = src.shape[-2:]  #(h,w)
-                        box_masks_level = F.interpolate(box_masks[:,class_idx,:,:].unsqueeze(1), size=downsample_size, mode='bilinear')
-                        box_masks_level = torch.where(box_masks_level > 0.0, torch.ones_like(box_masks_level), torch.zeros_like(box_masks_level))
-                        box_masks_level_flatten = box_masks_level.squeeze(1).flatten(1)
-                        mask_flatten_da.append(box_masks_level_flatten)
-                    mask_flatten_da = torch.cat(mask_flatten_da, dim=1)  #(b,四个尺度：h*w)
+                    for src in srcs:
+                        downsample_size = src.shape[-2:]
+                        box_masks_level = F.interpolate(
+                            box_masks[:, class_idx, :, :].unsqueeze(1),
+                            size=downsample_size,
+                            mode='bilinear',
+                            align_corners=False,  # 建议加上，避免插值不一致警告/不确定性
+                        )
+
+                        obj_mask = (box_masks_level > 0.0).squeeze(1).flatten(1)  # bool
+                        kpm = ~obj_mask  # bool, 背景=True, 目标=False
+                        mask_flatten_da.append(kpm)
+
+                    mask_flatten_da = torch.cat(mask_flatten_da, dim=1)  # (b, sum(h*w))
                     mask_flatten_da_class.append(mask_flatten_da)
-                mask_flatten_da_class = torch.stack(mask_flatten_da_class, dim=1)#(b,num_class,四个尺度：h*w)
+
+                mask_flatten_da_class = torch.stack(mask_flatten_da_class, dim=1)  # (b, num_class, sum(h*w)) bool
+
         hs, reference, hs_enc, ref_enc, init_box_proposal,da_output = self.transformer(srcs, masks, input_query_bbox, poss,input_query_label,attn_mask,da_mask = mask_flatten_da_class)
 
         # In case num object=0
