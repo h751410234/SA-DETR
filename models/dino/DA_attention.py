@@ -58,23 +58,28 @@ class DomainAttention(nn.Module):
         return tensor if pos is None else tensor + pos
 
     def forward(self, query, src, pos=None, padding_mask=None):
-        """ Args:
-            query (batch_size, num_queries, d_model): discriminator query
-            src, pos (batch_size, sequence_length, d_model): patch tokens and position encodings
-            padding_mask (batch_size, num_classes,sequence_length): key padding mask
-        """
         cache_query_result = []
         for class_idx in range(query.shape[1]):
-            query_c = query[:,class_idx,:].unsqueeze(1) #[batch_size,1,d_model]
+            query_c = query[:, class_idx, :].unsqueeze(1)  # (b,1,d)
+
+            if padding_mask is None:
+                kpm = None
+            else:
+                kpm = padding_mask[:, class_idx, :].bool()  # (b,S) True=屏蔽
+                all_masked = kpm.all(dim=1)  # (b,)
+                if all_masked.any():
+                    kpm = kpm.clone()
+                    kpm[all_masked] = False  # 避免全mask
+
             r_query_c, _ = self.cross_attn(
                 query=query_c.transpose(0, 1),
                 key=self.with_pos_embed(src, pos).transpose(0, 1),
                 value=src.transpose(0, 1),
-                key_padding_mask=padding_mask[:,class_idx,:],
+                key_padding_mask=kpm,
             )
-            cache_query_result.append(r_query_c) #[1,batch_size,d_model]
-        #整合每个类别的query
-        r_query = torch.cat(cache_query_result,dim=0) #[num_classes,batch_size,d_model]
+            cache_query_result.append(r_query_c)
+
+        r_query = torch.cat(cache_query_result, dim=0)
         query = query + self.dropout1(r_query.transpose(0, 1))
         query = self.norm1(query)
         query = query + self.dropout2(self.linear(query))
