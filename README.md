@@ -5,8 +5,18 @@
 This repository provides the official implementation for our paper:  
 **"Style-Adaptive Detection Transformer for Single-Source Domain Generalized Object Detection."**
 
-If you find this project useful for your research, please consider citing our paper.
+If you find this project useful for your research, please consider citing our paper:
 
+```bibtex
+@article{jianhong2026style,
+  title={Style-adaptive detection transformer for single-source domain generalized object detection},
+  author={Jianhong, Han and Wang, Yupei and Chen, Liang},
+  journal={Neurocomputing},
+  pages={133583},
+  year={2026},
+  publisher={Elsevier}
+}
+```
 
 <p align="center">
   <img src="figs/Figure1.png" alt="Model overview" width="700">
